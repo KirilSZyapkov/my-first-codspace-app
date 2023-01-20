@@ -1,70 +1,52 @@
-import { useCallback, useEffect, useState } from 'react'
-import Button from '../components/Button'
-import ClickCount from '../components/ClickCount'
-import styles from '../styles/home.module.css'
+import { useState } from 'react'; 
 
-function throwError() {
-  console.log(
-    // The function body() is not defined
-    document.body()
-  )
-}
+import Task from '../components/Task';
+import styles from './index.module.css';
+
+let tasks = [];
 
 function Home() {
-  const [count, setCount] = useState(0)
-  const increment = useCallback(() => {
-    setCount((v) => v + 1)
-  }, [setCount])
+  
+  
+ const [data, setData] = useState(tasks);
 
-  useEffect(() => {
-    const r = setInterval(() => {
-      increment()
-    }, 1000)
-
-    return () => {
-      clearInterval(r)
+  
+  function newElement(e){
+    e.preventDefault();
+    const target = e.target;
+    const text = target.text.value.trim();
+    if (text === '') {
+      
+      return alert("Please enter a task!");
+    } else {
+     setData(prevData=> (
+      [...prevData, {_id: Math.random()*1000, text}]
+     ))
     }
-  }, [increment])
+    target.text.value = '';
+  };
+    
+  function dellTask(id, e){
+    e.stopPropagation();
+    setData(prevData => (
+      prevData.filter(t=> t._id !== id)
+    ))
+  }
 
-  return (
-    <main className={styles.main}>
-      <h1>Fast Refresh Demo</h1>
-      <p>
-        Fast Refresh is a Next.js feature that gives you instantaneous feedback
-        on edits made to your React components, without ever losing component
-        state.
-      </p>
-      <hr className={styles.hr} />
-      <div>
-        <p>
-          Auto incrementing value. The counter won't reset after edits or if
-          there are errors.
-        </p>
-        <p>Current value: {count}</p>
-      </div>
-      <hr className={styles.hr} />
-      <div>
-        <p>Component with state.</p>
-        <ClickCount />
-      </div>
-      <hr className={styles.hr} />
-      <div>
-        <p>
-          The button below will throw 2 errors. You'll see the error overlay to
-          let you know about the errors but it won't break the page or reset
-          your state.
-        </p>
-        <Button
-          onClick={(e) => {
-            setTimeout(() => document.parentNode(), 0)
-            throwError()
-          }}
-        >
-          Throw an Error
-        </Button>
-      </div>
-      <hr className={styles.hr} />
-    </main>
+    return (
+      <div className={styles.app_container}>
+        <div id="myDIV" className={styles.header}>
+          <h2 style={{"margin":"5px"}}>My To Do List</h2>
+          <form onSubmit={newElement}>
+            <input className={styles.inputs} type="text" id="myInput" name='text' placeholder="Title..."/>
+            <button type='submit' className={styles.addBtn}>Add</button>
+          </form>
+        </div>
+      
+        <ul className={styles.uls} id="myUL">
+            {data.map(task => <Task key={task._id} {...task} dellTask={dellTask} />)}
+       </ul>
+     </div>
   )
 }
 

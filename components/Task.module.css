@@ -1,0 +1,59 @@
+.btn_dell{
+    background-color: hsla(0, 98%, 52%, 0.959);
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+.checked {
+    /* background: #888; */
+    color: black;
+    text-decoration: line-through;
+}
+
+.task_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.task_el {
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px 12px 40px;
+    list-style-type: none;
+    font-size: 18px;
+    transition: 0.2s;
+    width: 100%;
+    
+    
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+
+  .task_container:hover {
+    background: #ddd;
+  }
+    
+  
+  /* Add a "checked" mark when clicked on */
+  .task_el.checked::before {
+    content: '';
+    position: absolute;
+    border-color: red;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 7px;
+  }
